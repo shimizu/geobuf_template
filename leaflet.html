@@ -53,7 +53,8 @@ var p1 = new Promise(function(callback){
 })      
 var p2 = new Promise(function(callback){
         //リクエスト送信
-        getGeobuf("buf/city.geojson.buf", function(geojson){
+        getGeobuf("buf/tokyo.geojson.buf", function(geojson){
+			console.log(geojson.features)
             var path = renderMaps(cityLayer, geojson)
             callback(path)
         })
