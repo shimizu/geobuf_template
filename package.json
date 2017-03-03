@@ -1,0 +1,18 @@
+{
+  "name": "geobuf_template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "json2buf.js",
+  "dependencies": {
+    "geobuf": "^3.0.0",
+    "geojson-precision": "^0.4.0",
+    "simplify-geojson": "^1.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "convert":"./convert.sh $filename",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
