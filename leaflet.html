@@ -11,6 +11,10 @@ html, body, #map {
     width: 100%;
     height: 100%;
 }
+
+.prefLayer path {
+	fill:none;
+}
 </style>
 
 
@@ -50,7 +54,7 @@ var p1 = new Promise(function(callback){
 var p2 = new Promise(function(callback){
         //リクエスト送信
         getGeobuf("buf/city.geojson.buf", function(geojson){
-            var path = renderMaps(prefLayer, geojson)
+            var path = renderMaps(cityLayer, geojson)
             callback(path)
         })
 })
