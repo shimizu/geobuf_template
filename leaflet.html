@@ -42,7 +42,7 @@ var gen = d3.geoPath().projection(transform)
 
 var p1 = new Promise(function(callback){
         //リクエスト送信
-        getGeobuf("buf/pref.buf", function(geojson){
+        getGeobuf("buf/pref.geojson.buf", function(geojson){
             var path = renderMaps(prefLayer, geojson)
             callback(path)
         })
