@@ -21,6 +21,7 @@ oReq.responseType = "arraybuffer";
 
 oReq.onload = function(oEvent) {
     var pd = new Pbf(new Uint8Array(oReq.response))
+    console.log(pb)
     console.log(geobuf.decode(pd))
 }
 
