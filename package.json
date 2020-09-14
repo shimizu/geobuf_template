@@ -4,13 +4,13 @@
   "description": "",
   "main": "json2buf.js",
   "dependencies": {
-    "geobuf": "^3.0.0",
+    "geobuf": "^3.0.2",
     "geojson-precision": "^0.4.0",
-    "simplify-geojson": "^1.0.3"
+    "simplify-geojson": "^1.0.4"
   },
   "devDependencies": {},
   "scripts": {
-    "convert":"./convert.sh $filename",
+    "convert": "./convert.sh $filename",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

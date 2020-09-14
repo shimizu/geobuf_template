@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<title></title>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css"/>
+
+<style>
+html, body, #map {
+    width: 100%;
+    height: 100%;
+}
+
+.prefLayer path {
+	fill:none;
+}
+</style>
+
+
+</head>
+
+<body>
+<div id="map"></div>    
+<script src="https://www.promisejs.org/polyfills/promise-6.1.0.min.js"></script>
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/4.3.0/d3.min.js"></script>    
+<script src="//cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet-src.js"></script>
+<script src="https://unpkg.com/pbf@3.0.2/dist/pbf-dev.js"></script>
+<script src="https://unpkg.com/geobuf@3.0.0/dist/geobuf.js"></script>
+<script>
+var map = initMaps();
+var svg = d3.select("#map").select("svg")
+
+var cityLayer = svg.append("g").classed("cityLayer", true)
+var prefLayer = svg.append("g").classed("prefLayer", true)
+
+var projectPoint = function(x, y) {
+    var point = map.latLngToLayerPoint(new L.LatLng(y, x))
+    this.stream.point(point.x, point.y)
+}    
+
+var transform = d3.geoTransform({point: projectPoint})
+var gen = d3.geoPath().projection(transform)
+
+
+var p1 = new Promise(function(callback){
+        //リクエスト送信
+        getGeobuf("../buf/pref.geojson.buf", function(geojson){
+            var path = renderMaps(prefLayer, geojson)
+            callback(path)
+        })
+})      
+var p2 = new Promise(function(callback){
+        //リクエスト送信
+        getGeobuf("../buf/city.geojson.buf", function(geojson){
+			console.log(geojson.features)
+            var path = renderMaps(cityLayer, geojson)
+            callback(path)
+        })
+})
+
+Promise.all([p1, p2]).then(function(values) {
+    console.log(values)
+    var pref = values[0]
+    var city = values[1]
+    
+	var update = function() {		
+        pref.attr("d", gen)
+        city.attr("d", gen)
+	}
+
+	map.on("viewreset", update)
+
+	update()
+})
+
+
+function initMaps(){
+    var map = L.map('map').setView([39.702053　, 141.15448379999998], 6)
+	map._initPathRoot()	
+    return map
+}
+
+function renderMaps(layer, geojson) {
+    var path = layer.selectAll("path")
+        .data(geojson.features)
+        .enter()
+        .append("path")
+        .attr("d", gen)
+        .attr("stroke", "#999")
+        .attr("stroke-width", 1)
+        .attr("fill", "white")
+        
+    return path
+}
+
+function getGeobuf(file, callback) {
+    var oReq = new XMLHttpRequest();
+    oReq.open("GET", file, true);
+    oReq.responseType = "arraybuffer";
+    
+    oReq.onload = function(oEvent) {
+        var pd = new Pbf(new Uint8Array(oReq.response))
+        callback(geobuf.decode(pd))
+    }
+    
+    oReq.send()    
+}
+
+
+
+</script>
+
+</body>
+</html>
