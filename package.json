@@ -6,7 +6,7 @@
   "dependencies": {
     "geobuf": "^3.0.2",
     "geojson-precision": "^0.4.0",
-    "simplify-geojson": "^1.0.4"
+    "simplify-geojson": "^1.0.5"
   },
   "devDependencies": {},
   "scripts": {
